@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row">
+      <h1>Add Task</h1>
+      <form #form="ngForm" (submit)="addTask()">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title" name="title" [(ngModel)]="newTask.title">
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" name="description" [(ngModel)]="newTask.description">
+        </div>
+        <!-- Error message display -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        <button type="submit" class="btn btn-primary">Create Task</button>
+      </form>
+  </div>
+
+  <div class="row">
+      <h1>My Tasks</h1>
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let taskItem of taskItems" (click)="selectTask(taskItem)">
+              <td>{{ taskItem.title }}</td>
+              <td>{{ taskItem.description }}</td>
+              <td>{{ getStatusName(taskItem.status) }}</td>
+              <td>
+                <button class="btn btn-danger btn-sm" (click)="deleteTask(taskItem.id ?? -1)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+  </div>
+
+  <div class="row" *ngIf="selectedTask">
+      <h1>Edit Task</h1>
+      <form #editForm="ngForm" (submit)="updateTask()">
+        <div class="mb-3">
+          <label for="editTitle" class="form-label">Title</label>
+          <input type="text" class="form-control" id="editTitle" name="editTitle" [(ngModel)]="selectedTask.title">
+        </div>
+        <div class="mb-3">
+          <label for="editDescription" class="form-label">Description</label>
+          <input type="text" class="form-control" id="editDescription" name="editDescription" [(ngModel)]="selectedTask.description">
+        </div>
+        <div class="mb-3">
+          <label for="editStatus" class="form-label">Status</label>
+          <select class="form-control" id="editStatus" name="editStatus" [(ngModel)]="selectedTask.status">
+            <option *ngFor="let status of statuses; let i = index" [value]="i">{{ status }}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-success">Update Task</button>
+      </form>
+  </div>
+</div>
